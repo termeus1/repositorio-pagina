@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Feliz dia dos namorados Sop, Minha Florzinha de Cerejeira 🌸</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #a8e6cf;
+    transition: background 1s ease;
+    padding: 2rem 1rem 6rem;
+    color: #3a3a3a;
+  }
+  h1, h2 { font-family: 'Pacifico', cursive; text-align: center; }
+  h1 { font-size: 3rem; color: #d81e5b; text-shadow: 1px 1px 5px #fff3f3; margin-bottom: 0.3rem; }
+  h2 { color: #388e3c; margin-bottom: 1.5rem; font-weight: 600; }
+  #game-container, #content-container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(216, 30, 91, 0.2);
+    max-width: 600px;
+    width: 100%;
+    padding: 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+  }
+  #heartCanvas {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(216,30,91,0.3);
+    margin: 1rem auto 2rem;
+    display: block;
+    touch-action: none;
+  }
+  #instruction { font-weight: 700; color: #d81e5b; margin-bottom: 1rem; }
+  button {
+    background: linear-gradient(90deg, #d81e5b 60%, #6fcf97 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(216, 30, 91, 0.5);
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+  }
+  button:hover { background: linear-gradient(90deg, #6fcf97 60%, #d81e5b 100%); transform: scale(1.05); }
+  button:active { transform: scale(0.95); }
+  #continueBtn { display: none; }
+  #content-container { display: none; color: #3a3a3a; }
+  .message { font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.5; }
+  .highlight { color: #d81e5b; font-weight: 700; }
+  .nickname {
+    font-weight: 700; cursor: pointer; color: #388e3c; transition: color 0.3s ease;
+  }
+  .nickname.vampirinha:hover { color: #d81e5b; text-shadow: 0 0 8px #ff5c8d; }
+  .nickname.mortal:hover { color: #6fcf97; text-shadow: 0 0 8px #6fcf97; }
+  #toad {
+    position: fixed; bottom: 20px; left: -100px; width: 80px;
+    animation: toadRun 8s linear infinite;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 16px #a8e6cf);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  @keyframes toadRun { 0% { left: -100px; } 100% { left: 100vw; } }
+  #toad.jump { transform: translateY(-40px) scale(1.1) rotate(-10deg); }
+  .heart-float {
+    position: fixed; font-size: 2rem; pointer-events: none;
+    animation: floatUp 2s ease forwards; z-index: 9999;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-100px) scale(1.3); }
+  }
+  #musicControl {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #d81e5b; border-radius: 50%; width: 60px; height: 60px;
+    box-shadow: 0 5px 15px rgba(216, 30, 91, 0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.3s ease; z-index: 1100;
+  }
+  #musicControl:hover { background: #a3153f; }
+  #musicControl svg { fill: white; width: 28px; height: 28px; }
+  .surprise-btn {
+    background: linear-gradient(45deg, #6fcf97, #d81e5b);
+    color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 30px;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer; margin: 0.5rem;
+    box-shadow: 0 5px 15px rgba(216, 30, 91, 0.3); transition: background 0.3s ease;
+  }
+  .surprise-btn:hover { background: linear-gradient(45deg, #d81e5b, #6fcf97); }
+  #header-img, #footer-img {
+    max-width: 120px; border-radius: 15px; margin: 1rem auto; display: block;
+    box-shadow: 0 6px 18px rgba(216, 30, 91, 0.3); user-select: none;
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 2.2rem; }
+    #toad { width: 55px; }
+    #header-img, #footer-img { max-width: 90px; }
+  }
+</style>
+</head>
+<body>
+
+  <img src="https://cdn.pixabay.com/photo/2017/08/30/12/45/cherry-blossoms-2699817_960_720.jpg" alt="Flor de cerejeira" id="header-img" aria-hidden="true" />
+
+  <div id="game-container" role="main" aria-label="Jogo de ligar pontos para formar coração">
+    <h1>Nosso Amor e nossa conexão💚💖</h1>
+    <p id="instruction">Clique nos pontos na ordem correta <span class="highlight">Soso</span>!!</p>
+    <canvas id="heartCanvas" width="400" height="400" aria-label="Canvas do jogo de ligar pontos"></canvas>
+    <button id="continueBtn" aria-disabled="true" aria-label="Entrar no conteúdo">Entrar no nosso mundo</button>
+  </div>
+
+  <div id="content-container" role="main" aria-label="Conteúdo de mensagens e surpresas" tabindex="0">
+    <h1>Para minha florzinha de cerejeira, <span class="highlight">Sop</span> 🌸</h1>
+    <p class="message">
+      Desde aquele 18 de janeiro, quando você estava na praia e acabou se queimou, e eu chorava na última sessão de RPG, nossa história é feita de risos, farpinhas, lágrimas e muito amor.
+    </p>
+    <p class="message">
+      Você, minha <span class="nickname vampirinha" title="Minha vampirinha fofa!">vampirinha</span>, ilumina minha vida mesmo nas noites mais escuras. E eu, seu <span class="nickname mortal" title="Mero mortal bobinho">mero mortal bobinho</span>, sou o homem mais feliz por ser seu WIWIWI.
+    </p>
+    <p class="message">
+      Somos WAWAWA e WIWIWI, corações verdes 💚 e rosas 💖 entrelaçados para sempre.
+    </p>
+    <div>
+      <button class="surprise-btn" data-page="1">Nossa História</button>
+      <button class="surprise-btn" data-page="2">Apelidos Carinhosos</button>
+      <button class="surprise-btn" data-page="3">Promessas Eternas</button>
+      <button class="surprise-btn" data-page="4">Segredo do Meu Coração</button>
+    </div>
+    <section id="page-content" style="margin-top: 1.5rem; font-size: 1.2rem; color: #388e3c; min-height: 140px;"></section>
+  </div>
+
+  <img src="https://cdn.pixabay.com/photo/2017/08/30/12/45/cherry-blossoms-2699817_960_720.jpg" alt="Flor de cerejeira" id="footer-img" aria-hidden="true" />
+
+  <img src="https://static.wikia.nocookie.net/mario/images/0/0e/Toad_3D_Land.png" alt="Toad correndo" id="toad" aria-label="Animação do Toad do Mario correndo pela tela">
+
+  <div id="musicControl" title="Tocar / Pausar música" role="button" tabindex="0" aria-pressed="false" aria-label="Controlar música">
+    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none;">
+      <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
+    </svg>
+  </div>
+
+  <audio id="audio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/25/audio_3d9f2d6e25.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio.
+  </audio>
+
+<script>
+  const canvas = document.getElementById('heartCanvas');
+  const ctx = canvas.getContext('2d');
+  const continueBtn = document.getElementById('continueBtn');
+  const gameContainer = document.getElementById('game-container');
+  const contentContainer = document.getElementById('content-container');
+  const pageContent = document.getElementById('page-content');
+  const surpriseButtons = document.querySelectorAll('.surprise-btn');
+  const toad = document.getElementById('toad');
+  const audio = document.getElementById('audio');
+  const musicControl = document.getElementById('musicControl');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+
+  // Pontos do coração simétrico
+  const heartPoints = [
+    [200, 170], [270, 110], [320, 170],
+    [300, 250], [200, 320], [100, 250],
+    [80, 170], [130, 110], [200, 170]
+  ];
+
+  let currentPoint = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#d81e5b';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    for(let i = 0; i < currentPoint; i++) {
+      if(i === 0) ctx.moveTo(...heartPoints[i]);
+      else ctx.lineTo(...heartPoints[i]);
+    }
+    ctx.stroke();
+    heartPoints.forEach(([x, y], i) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, Math.PI * 2);
+      ctx.fillStyle = i <= currentPoint ? '#6fcf97' : '#d81e5b';
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 16px Quicksand, Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(i + 1, x, y);
+    });
+  }
+
+  canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const [targetX, targetY] = heartPoints[currentPoint];
+    const dist = Math.hypot(x - targetX, y - targetY);
+    if(dist < 20) {
+      currentPoint++;
+      draw();
+      if(currentPoint === heartPoints.length) {
+        continueBtn.style.display = 'inline-block';
+        continueBtn.setAttribute('aria-disabled', 'false');
+      }
+    }
+  });
+
+  continueBtn.addEventListener('click', () => {
+    gameContainer.style.display = 'none';
+    contentContainer.style.display = 'block';
+    pageContent.innerHTML = pages[1].text;
+    setBackground(1);
+    // Tocar música após interação do usuário
+    audio.play().then(() => {
+      musicControl.setAttribute('aria-pressed', 'true');
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+    }).catch(() => {
+      // Se o navegador bloquear, o usuário pode clicar no controle de música
+    });
+  });
+
+  const pages = {
+    1: {
+      text: `Nossa história começou naquele 18 de janeiro, quando você estava na praia, e eu na última sessão de RPG. Desde então, rimos, choramos, brincamos e nos amamos cada vez mais. Eu amo amar você Sophia`,
+      bg: 'linear-gradient(135deg, #a8e6cf, #ffb6b9)'
+    },
+    2: {
+      text: `Você é minha <span class='nickname vampirinha' title='Minha vampirinha fofa!'>vampirinha</span> de meia tigela, e eu seu <span class='nickname mortal' title='Mero mortal bobinho'>mero mortal bobinho</span>. Nossos apelidos são só mais uma prova do nosso amor único.`,
+      bg: 'linear-gradient(135deg, #6fcf97, #d81e5b)'
+    },
+    3: {
+      text: `Prometo estar sempre ao seu lado, Sop, na alegria e na tristeza, sendo seu WIWIWI e cuidando da minha WAWAWA para sempre.`,
+      bg: 'linear-gradient(135deg, #ffb6b9, #a8e6cf)'
+    },
+    4: {
+      text: `você é a luz que ilumina minha vida, a razão dos meus sorrisos e meu amor eterno. Eu te amo infinitamente, minha Sop 💚💖`,
+      bg: 'linear-gradient(135deg, #d81e5b, #6fcf97)'
+    }
+  };
+
+  surpriseButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = btn.getAttribute('data-page');
+      pageContent.innerHTML = pages[page].text;
+      setBackground(page);
+      spawnHearts();
+    });
+  });
+
+  function setBackground(page) {
+    document.body.style.background = pages[page].bg;
+  }
+  function spawnHearts() {
+    for(let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.textContent = Math.random() > 0.5 ? '💚' : '💖';
+        heart.className = 'heart-float';
+        heart.style.left = (Math.random() * window.innerWidth) + 'px';
+        heart.style.top = (window.innerHeight - 80) + 'px';
+        heart.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+      }, i * 150);
+    }
+  }
+  toad.addEventListener('click', () => {
+    toad.classList.add('jump');
+    spawnHearts();
+    setTimeout(() => toad.classList.remove('jump'), 700);
+  });
+  musicControl.addEventListener('click', () => {
+    if(audio.paused) {
+      audio.play();
+      musicControl.setAttribute('aria-pressed', 'true');
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+    } else {
+      audio.pause();
+      musicControl.setAttribute('aria-pressed', 'false');
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+    }
+  });
+  draw();
+</script>
+</body>
+</html>
